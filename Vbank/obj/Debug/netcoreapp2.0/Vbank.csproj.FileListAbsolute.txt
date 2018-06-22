@@ -1,0 +1,11 @@
+C:\Users\Admins\RiderProjects\Vbank\Vbank\bin\Debug\netcoreapp2.0\Vbank.deps.json
+C:\Users\Admins\RiderProjects\Vbank\Vbank\bin\Debug\netcoreapp2.0\Vbank.runtimeconfig.json
+C:\Users\Admins\RiderProjects\Vbank\Vbank\bin\Debug\netcoreapp2.0\Vbank.runtimeconfig.dev.json
+C:\Users\Admins\RiderProjects\Vbank\Vbank\bin\Debug\netcoreapp2.0\Vbank.dll
+C:\Users\Admins\RiderProjects\Vbank\Vbank\bin\Debug\netcoreapp2.0\Vbank.pdb
+C:\Users\Admins\RiderProjects\Vbank\Vbank\obj\Debug\netcoreapp2.0\Vbank.csprojAssemblyReference.cache
+C:\Users\Admins\RiderProjects\Vbank\Vbank\obj\Debug\netcoreapp2.0\Vbank.csproj.CoreCompileInputs.cache
+C:\Users\Admins\RiderProjects\Vbank\Vbank\obj\Debug\netcoreapp2.0\Vbank.AssemblyInfoInputs.cache
+C:\Users\Admins\RiderProjects\Vbank\Vbank\obj\Debug\netcoreapp2.0\Vbank.AssemblyInfo.cs
+C:\Users\Admins\RiderProjects\Vbank\Vbank\obj\Debug\netcoreapp2.0\Vbank.dll
+C:\Users\Admins\RiderProjects\Vbank\Vbank\obj\Debug\netcoreapp2.0\Vbank.pdb
