@@ -146,47 +146,15 @@ namespace Vbank.view
                 {
                     case 1:
                         controller.HistoryTransactionWith10Day();
-                        if (controller.HistoryTransactionWith10Day())
-                        {
-                            PrintTransaction();
-                        }
                         break;
                     case 2:
                         controller.HistoryTransactionWithSearchDay();
-                        if (controller.HistoryTransactionWithSearchDay())
-                        {
-                            PrintTransaction();
-                        }
                         break;
                     case 3:
                         GenarateCustomerMenu();
                         break;
                     default:
                         Console.WriteLine("Lựa chọn không hợp lệ!");
-                        break;
-                }
-            }
-        }
-
-        public static void PrintTransaction()
-        {
-            while (true)
-            {
-                Console.WriteLine("Bạn có muốn in lịch sử giao dịch ra file .txt không?");
-                Console.WriteLine("1. Đồng ý.");
-                Console.WriteLine("2. Không và quay lại.");
-                Console.WriteLine("-------------------------------------------------------");
-                Console.WriteLine("Lựa chọn của bạn là: ");
-                var choice = Utility.GetInt32Number();
-                switch (choice)
-                {
-                    case 1:
-                        Console.WriteLine("Chức năng đang phát triển.");
-                        break;
-                    case 2:
-                        Console.Clear();
-                        Console.Out.Flush();
-                        GenerateTransaction();
                         break;
                 }
             }

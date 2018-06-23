@@ -1,5 +1,6 @@
 ﻿using System;
-using iTextSharp.text.pdf.security;
+using System.Collections.Generic;
+using System.IO;
 using Vbank.entity;
 using Vbank.model;
 using Vbank.utility;
@@ -9,11 +10,13 @@ namespace Vbank.controller
 {
     public class AccountController
     {
-        delegate void BelegateVoid();
+
         private readonly AccountModel _model = new AccountModel();
 
         public void Register()
         {
+            Console.Clear();
+            Console.Out.Flush();
             Console.WriteLine("Nhập thông tin tài khoản.");
             Console.WriteLine("-----------------------------------");
             Console.WriteLine("Tài khoản: ");
@@ -69,6 +72,8 @@ namespace Vbank.controller
 
         public Boolean DoLogin()
         {
+            Console.Clear();
+            Console.Out.Flush();
             // Lấy thông tin từ người dùng nhập vào.
             Console.WriteLine("============= ĐĂNG NHẬP ============");
             Console.WriteLine("TÀI KHOẢN: ");
@@ -113,6 +118,8 @@ namespace Vbank.controller
 
         public void WithDraw()
         {
+            Console.Clear();
+            Console.Out.Flush();
             Console.WriteLine("Rút tiền.");
             Console.WriteLine("---------------------------------");
             Console.WriteLine("Vui lòng nhập số tiền bạn muốn rút: ");
@@ -141,6 +148,8 @@ namespace Vbank.controller
 
         public void Deposit()
         {
+            Console.Clear();
+            Console.Out.Flush();
             Console.WriteLine("Gửi tiền.");
             Console.WriteLine("---------------------------------");
             Console.WriteLine("Vui lòng nhập số tiền bạn muốn gửi: ");
@@ -168,6 +177,8 @@ namespace Vbank.controller
 
         public void Transfer()
         {
+            Console.Clear();
+            Console.Out.Flush();
             Program.CurrentLoggedIn = _model.GetAccountByUserName(Program.CurrentLoggedIn.Username);
             Console.WriteLine("-------------------------");
             Console.WriteLine("Số dư của bạn :" + Program.CurrentLoggedIn.Balance + " vnđ");
@@ -202,10 +213,12 @@ namespace Vbank.controller
             Console.WriteLine("Ấn enter để tiếp tục.");
             Console.ReadLine();
         }
-        
-        
+
+
         public Boolean HistoryTransactionWith10Day()
         {
+            Console.Clear();
+            Console.Out.Flush();
             var lt = _model.GetTransactionWith10day(Program.CurrentLoggedIn.AccountNumber);
             Program.CurrentAccountTransaction = _model.GetTransactionWith10day(Program.CurrentLoggedIn.AccountNumber);
 
@@ -218,11 +231,8 @@ namespace Vbank.controller
                     Console.Clear();
                     Console.Out.Flush();
                     Console.WriteLine("Tìm thấy {0} kết quả. ", lt.Count);
-                    var text = "Tìm thấy" + lt.Count +" kết quả. " + Environment.NewLine;
                     Console.WriteLine("\t \t \t \t \t \t \t \t  DANH SÁCH LỊCH SỬ GIAO DỊCH 10 NGÀY GẦN ĐÂY  ");
-                    var text1 = "\t \t \t \t \t \t \t \t  DANH SÁCH LỊCH SỬ GIAO DỊCH 10 NGÀY GẦN ĐÂY  " + Environment.NewLine;
                     Console.WriteLine(" ");
-                    var text2 = " " + Environment.NewLine;
                     Console.WriteLine(
                         $"|{"Stt",3}|{"id",5}|{"Ngày tạo",23}|{"Kiểu GD",10}|{"Số tiền",8}|{"Lời nhắn",17}|{"STK người gửi",37}|{"Tên người gửi",15}|{"STK người nhận",37}|{"Tên người nhận",15}|");
                     Console.WriteLine(
@@ -238,6 +248,78 @@ namespace Vbank.controller
                             $"|{"---",3}|{"-----",5}|{"-----------------------",23}|{"----------",10}|{"--------",8}|{"-----------------",17}|{"-------------------------------------",37}|{"---------------",15}|{"-------------------------------------",37}|{"---------------",15}|");
                         if (++processed == 10) break;
                     }
+
+                    var text = "Tìm thấy " + lt.Count + " kết quả. " + Environment.NewLine;
+                    var text1 = "\t \t \t \t \t \t \t \t \t \t \t \tDANH SÁCH LỊCH SỬ GIAO DỊCH 10 NGÀY GẦN ĐÂY  " +
+                                Environment.NewLine;
+                    var text2 = " " + Environment.NewLine;
+                    var text3 =
+                        $"|{"Stt",3}|{"id",5}|{"Ngày tạo",23}|{"Kiểu GD",10}|{"Số tiền",8}|{"Lời nhắn",17}|{"STK người gửi",37}|{"Tên người gửi",15}|{"STK người nhận",37}|{"Tên người nhận",15}|" +
+                        Environment.NewLine;
+                    var text4 =
+                        $"|{"---",3}|{"-----",5}|{"-----------------------",23}|{"----------",10}|{"--------",8}|{"-----------------",17}|{"-------------------------------------",37}|{"---------------",15}|{"-------------------------------------",37}|{"---------------",15}|" +
+                        Environment.NewLine;
+                    Console.WriteLine("Bạn có muốn in lịch sử giao dịch ra file .txt không?");
+                    Console.WriteLine("1. Đồng ý." + "\t\t" + "2. Không và quay lại.");
+                    Console.WriteLine("-------------------------------------------------------");
+                    Console.WriteLine("Lựa chọn của bạn là: ");
+                    var choice = Utility.GetInt32Number();
+                    Console.Clear();
+                    Console.Out.Flush();
+                    switch (choice)
+                    {
+                        case 1:
+                            Console.Clear();
+                            Console.Out.Flush();
+                            int _stt = 0;
+                            List<string> ltp = new List<string>();
+                            string nameFile = string.Format("HistoryTransaction-{0:yyyy-MM-dd_hh-mm-ss-tt}.txt",
+                                DateTime.Now);
+                            foreach (var item in lt)
+                            {
+                                Program.CurrentReceiverAccountNumber =
+                                    _model.GetAccountWithAccountNumber(item.ReceiverAccountNumber);
+                                var stt = ++_stt;
+                                var id = item.Id;
+                                var createdAt = item.CreatedAt;
+                                var type = item.Type;
+                                var amount = item.Amount;
+                                var content = item.Content;
+                                var senderAccountNumber = item.SenderAccountNumber;
+                                var senderAccountName = Program.CurrentLoggedIn.FullName;
+                                var receiverAccountNumber = item.ReceiverAccountNumber;
+                                var receiverAccountName = Program.CurrentReceiverAccountNumber.FullName;
+                                var text5 =
+                                    $"|{stt,3}|{id,5}|{createdAt,23}|{type,10}|{amount,8}|{content,17}|{senderAccountNumber,37}|{senderAccountName,15}|{receiverAccountNumber,37}|{receiverAccountName,15}|" +
+                                    Environment.NewLine;
+                                var text6 =
+                                    $"|{"---",3}|{"-----",5}|{"-----------------------",23}|{"----------",10}|{"--------",8}|{"-----------------",17}|{"-------------------------------------",37}|{"---------------",15}|{"-------------------------------------",37}|{"---------------",15}|" +
+                                    Environment.NewLine;
+                                ltp.Add(text5);
+                                ltp.Add(text6);
+                            }
+
+                            using (var sw = new StreamWriter(nameFile))
+                            {
+                                sw.Write(text + text1 + text2 + text3 + text4);
+                                foreach (var item in ltp)
+                                {
+                                    sw.WriteLine(item);
+                                }
+                            }
+                            Console.WriteLine("In file với tên " + nameFile + " thành công.");
+                            Console.WriteLine("Ấn enter để quay lại....");
+                            Console.ReadLine();
+                            MainView.GenarateMenu();
+                            Console.Clear();
+                            Console.Out.Flush();
+                            break;
+                        case 2:
+                            Console.Clear();
+                            Console.Out.Flush();
+                            MainView.GenarateMenu();
+                            break;
+                    }
                 }
                 else
                 {
@@ -251,9 +333,6 @@ namespace Vbank.controller
 
             if (lt.Count > 0)
             {
-                Console.WriteLine(" ");
-                Console.WriteLine("Ấn enter để trở lại....");
-                Console.ReadLine();
                 return true;
             }
 
@@ -313,9 +392,79 @@ namespace Vbank.controller
                             Program.CurrentReceiverAccountNumber =
                                 _model.GetAccountWithAccountNumber(item.ReceiverAccountNumber);
                             Console.WriteLine(
-                                $"|{processed + 1, 3}|{item.Id,5}|{item.CreatedAt,23}|{item.Type,10}|{item.Amount,8}|{item.Content,17}|{item.SenderAccountNumber,37}|{Program.CurrentLoggedIn.FullName,15}|{item.ReceiverAccountNumber,37}|{Program.CurrentReceiverAccountNumber.FullName,15}|");
+                                $"|{processed + 1,3}|{item.Id,5}|{item.CreatedAt,23}|{item.Type,10}|{item.Amount,8}|{item.Content,17}|{item.SenderAccountNumber,37}|{Program.CurrentLoggedIn.FullName,15}|{item.ReceiverAccountNumber,37}|{Program.CurrentReceiverAccountNumber.FullName,15}|");
                             Console.WriteLine(
                                 $"|{"---",3}|{"-----",5}|{"-----------------------",23}|{"----------",10}|{"--------",8}|{"-----------------",17}|{"-------------------------------------",37}|{"---------------",15}|{"-------------------------------------",37}|{"---------------",15}|");
+                        }
+
+                        var text = "Tìm thấy" + lt.Count + " kết quả. " + Environment.NewLine;
+                        var text1 = "\t \t \t \t \t \t \t \t  DANH SÁCH LỊCH SỬ GIAO DỊCH 10 NGÀY GẦN ĐÂY  " +
+                                    Environment.NewLine;
+                        var text2 = " " + Environment.NewLine;
+                        var text3 =
+                            $"|{"Stt",3}|{"id",5}|{"Ngày tạo",23}|{"Kiểu GD",10}|{"Số tiền",8}|{"Lời nhắn",17}|{"STK người gửi",37}|{"Tên người gửi",15}|{"STK người nhận",37}|{"Tên người nhận",15}|" +
+                            Environment.NewLine;
+                        var text4 =
+                            $"|{"---",3}|{"-----",5}|{"-----------------------",23}|{"----------",10}|{"--------",8}|{"-----------------",17}|{"-------------------------------------",37}|{"---------------",15}|{"-------------------------------------",37}|{"---------------",15}|" +
+                            Environment.NewLine;
+                        Console.WriteLine("Bạn có muốn in lịch sử giao dịch ra file .txt không?");
+                        Console.WriteLine("1. Đồng ý." + "\t\t" + "2. Không và quay lại.");
+                        Console.WriteLine("-------------------------------------------------------");
+                        Console.WriteLine("Lựa chọn của bạn là: ");
+                        var choice = Utility.GetInt32Number();
+                        Console.Clear();
+                        Console.Out.Flush();
+                        switch (choice)
+                        {
+                            case 1:
+                                int _stt = 0;
+                                List<string> ltp = new List<string>();
+                                string nameFile = string.Format("HistoryTransaction-{0:yyyy-MM-dd_hh-mm-ss-tt}.txt",
+                                    DateTime.Now);
+                                foreach (var item in lt)
+                                {
+                                    Program.CurrentReceiverAccountNumber =
+                                        _model.GetAccountWithAccountNumber(item.ReceiverAccountNumber);
+                                    var stt = ++_stt ;
+                                    var id = item.Id;
+                                    var createdAt = item.CreatedAt;
+                                    var type = item.Type;
+                                    var amount = item.Amount;
+                                    var content = item.Content;
+                                    var senderAccountNumber = item.SenderAccountNumber;
+                                    var senderAccountName = Program.CurrentLoggedIn.FullName;
+                                    var receiverAccountNumber = item.ReceiverAccountNumber;
+                                    var receiverAccountName = Program.CurrentReceiverAccountNumber.FullName;
+                                    var text5 =
+                                        $"|{stt,3}|{id,5}|{createdAt,23}|{type,10}|{amount,8}|{content,17}|{senderAccountNumber,37}|{senderAccountName,15}|{receiverAccountNumber,37}|{receiverAccountName,15}|" +
+                                        Environment.NewLine;
+                                    var text6 =
+                                        $"|{"---",3}|{"-----",5}|{"-----------------------",23}|{"----------",10}|{"--------",8}|{"-----------------",17}|{"-------------------------------------",37}|{"---------------",15}|{"-------------------------------------",37}|{"---------------",15}|" +
+                                        Environment.NewLine;
+                                    ltp.Add(text5);
+                                    ltp.Add(text6);
+                                }
+
+                                using (var sw = new StreamWriter(nameFile))
+                                {
+                                    sw.Write(text + text1 + text2 + text3 + text4);
+                                    foreach (var item in ltp)
+                                    {
+                                        sw.WriteLine(item);
+                                    }
+                                }
+                                Console.WriteLine("In file với tên " + nameFile + " thành công.");
+                                Console.WriteLine("Ấn enter để quay lại....");
+                                Console.ReadLine();
+                                Console.Clear();
+                                Console.Out.Flush();
+                                MainView.GenarateMenu();
+                                break;
+                            case 2:
+                                Console.Clear();
+                                Console.Out.Flush();
+                                MainView.GenarateMenu();
+                                break;
                         }
                     }
                 }
@@ -330,6 +479,8 @@ namespace Vbank.controller
 
         public void CheckBalance()
         {
+            Console.Clear();
+            Console.Out.Flush();
             Program.CurrentLoggedIn = _model.GetAccountByUserName(Program.CurrentLoggedIn.Username);
             Console.WriteLine("THÔNG TIN TÀI KHOẢN");
             Console.WriteLine("---------------------------------");

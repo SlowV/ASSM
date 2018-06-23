@@ -17,6 +17,7 @@
             Transfer = 3
         }
 
+        private int _stt;
         private string _id;
         private string _createdAt;
         private string _updatedAt;
@@ -24,7 +25,9 @@
         private decimal _amount;
         private string _content;
         private string _senderAccountNumber;
+        private string _senderAccountName;
         private string _receiverAccountNumber;
+        private string _receiverAccountName;
         private ActiveStatus _status;
 
         public Transaction()
@@ -43,6 +46,37 @@
             _receiverAccountNumber = receiverAccountNumber;
             _status = status;
         }
+
+        public Transaction(int stt, string id, string createdAt, string updatedAt, TransactionType type, decimal amount, string content, string senderAccountNumber, string senderAccountName, string receiverAccountNumber, string receiverAccountName, ActiveStatus status)
+        {
+            _stt = stt;
+            _id = id;
+            _createdAt = createdAt;
+            _updatedAt = updatedAt;
+            _type = type;
+            _amount = amount;
+            _content = content;
+            _senderAccountNumber = senderAccountNumber;
+            _senderAccountName = senderAccountName;
+            _receiverAccountNumber = receiverAccountNumber;
+            _receiverAccountName = receiverAccountName;
+            _status = status;
+        }
+
+        public Transaction(int stt, string id, string createdAt, TransactionType type, decimal amount, string content, string senderAccountNumber, string senderAccountName, string receiverAccountNumber, string receiverAccountName)
+        {
+            _stt = stt;
+            _id = id;
+            _createdAt = createdAt;
+            _type = type;
+            _amount = amount;
+            _content = content;
+            _senderAccountNumber = senderAccountNumber;
+            _senderAccountName = senderAccountName;
+            _receiverAccountNumber = receiverAccountNumber;
+            _receiverAccountName = receiverAccountName;
+        }
+
 
         public string Id
         {
@@ -96,6 +130,24 @@
         {
             get => _status;
             set => _status = value;
+        }
+
+        public int Stt
+        {
+            get => _stt;
+            set => _stt = value;
+        }
+
+        public string SenderAccountName
+        {
+            get => _senderAccountName;
+            set => _senderAccountName = value;
+        }
+
+        public string ReceiverAccountName
+        {
+            get => _receiverAccountName;
+            set => _receiverAccountName = value;
         }
     }
 }
