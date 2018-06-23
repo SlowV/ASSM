@@ -249,8 +249,8 @@ namespace Vbank.controller
                         if (++processed == 10) break;
                     }
 
-                    var text = "Tìm thấy " + lt.Count + " kết quả. " + Environment.NewLine;
-                    var text1 = "\t \t \t \t \t \t \t \t \t \t \t \tDANH SÁCH LỊCH SỬ GIAO DỊCH 10 NGÀY GẦN ĐÂY  " +
+                    var text = "Số lần giao dịch là: " + lt.Count + Environment.NewLine;
+                    var text1 = "\t \t \t \t \t \t \t \t \t \t \t \t \t\t\tDANH SÁCH LỊCH SỬ GIAO DỊCH 10 NGÀY GẦN ĐÂY  " +
                                 Environment.NewLine;
                     var text2 = " " + Environment.NewLine;
                     var text3 =
@@ -397,8 +397,8 @@ namespace Vbank.controller
                                 $"|{"---",3}|{"-----",5}|{"-----------------------",23}|{"----------",10}|{"--------",8}|{"-----------------",17}|{"-------------------------------------",37}|{"---------------",15}|{"-------------------------------------",37}|{"---------------",15}|");
                         }
 
-                        var text = "Tìm thấy" + lt.Count + " kết quả. " + Environment.NewLine;
-                        var text1 = "\t \t \t \t \t \t \t \t  DANH SÁCH LỊCH SỬ GIAO DỊCH 10 NGÀY GẦN ĐÂY  " +
+                        var text = "Số lần giao dịch là: " + lt.Count + Environment.NewLine;
+                        var text1 = "\t \t \t \t \t \t \t \t  \t\t\t DANH SÁCH LỊCH SỬ GIAO DỊCH 10 NGÀY GẦN ĐÂY  " +
                                     Environment.NewLine;
                         var text2 = " " + Environment.NewLine;
                         var text3 =

@@ -1,5 +1,5 @@
-Tìm thấy 6 kết quả. 
-	 	 	 	 	 	 	 	 	 	 	 	DANH SÁCH LỊCH SỬ GIAO DỊCH 10 NGÀY GẦN ĐÂY  
+Số lần giao dịch là: 6
+	 	 	 	 	 	 	 	 	 	 	 	 			DANH SÁCH LỊCH SỬ GIAO DỊCH 10 NGÀY GẦN ĐÂY  
  
 |Stt|   id|               Ngày tạo|   Kiểu GD| Số tiền|         Lời nhắn|                        STK người gửi|  Tên người gửi|                       STK người nhận| Tên người nhận|
 |---|-----|-----------------------|----------|--------|-----------------|-------------------------------------|---------------|-------------------------------------|---------------|

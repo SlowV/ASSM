@@ -21,6 +21,8 @@
         </e>
         <e p="HistoryTransaction-2018-06-23_09-26-51-PM.txt" t="Include" />
         <e p="HistoryTransaction-2018-06-23_09-31-14-PM.txt" t="Include" />
+        <e p="HistoryTransaction-2018-06-23_09-32-49-PM.txt" t="Include" />
+        <e p="HistoryTransaction-2018-06-23_09-43-43-PM.txt" t="Include" />
         <e p="model" t="Include">
           <e p="AccountModel.cs" t="Include" />
           <e p="DbConnection.cs" t="Include" />
