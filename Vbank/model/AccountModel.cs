@@ -428,20 +428,28 @@ namespace Vbank.model
         {
             DbConnection.Instance().OpenConnection();
             var transaction = DbConnection.Instance().Connection.BeginTransaction();
+            try
+            {
                 var date = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
                 var queryUpdateTransaction =
                     "update `transactions` set status = 3, updateAt = @updateAt where `transactions`.`id` = @id and status = 2";
                 var cmd = new MySqlCommand(queryUpdateTransaction, DbConnection.Instance().Connection);
                 cmd.Parameters.AddWithValue("@updateAt", date);
                 cmd.Parameters.AddWithValue("@id", id);
-            var updateTrannsaction = cmd.ExecuteNonQuery();
-            if (updateTrannsaction == 1)
-            {
-                transaction.Commit();
-                return true;
+                var updateTrannsaction = cmd.ExecuteNonQuery();
+                if (updateTrannsaction == 1)
+                {
+                    transaction.Commit();
+                    return true;
+                }
+                DbConnection.Instance().CloseConnection();
+                return false;
             }
-            DbConnection.Instance().CloseConnection();
-            return false;
+            catch (VbankError)
+            {
+               transaction.Rollback();
+                return false;
+            }
         }
 
         public bool CheckExistId(string id)

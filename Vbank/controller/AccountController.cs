@@ -521,7 +521,7 @@ namespace Vbank.controller
             }
             else
             {
-                Console.WriteLine("Vui lòng nhập đúng ngày tháng.");
+                Console.WriteLine("Vui lòng nhập đúng ngày tháng!");
             }
 
             return false;
