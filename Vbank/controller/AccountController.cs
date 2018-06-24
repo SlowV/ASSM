@@ -46,6 +46,7 @@ namespace Vbank.controller
                 if (choice == "Y")
                 {
                     DoLogin();
+                    MainView.GenarateMenu();
                 }
                 else if (choice == "N")
                 {
@@ -120,7 +121,8 @@ namespace Vbank.controller
         {
             Console.Clear();
             Console.Out.Flush();
-            Console.WriteLine("Rút tiền.");
+            Program.CurrentLoggedIn = _model.GetAccountByUserName(Program.CurrentLoggedIn.Username);
+            Console.WriteLine("Rút tiền. \t \t Số dư của bạn: " + Program.CurrentLoggedIn.Balance);
             Console.WriteLine("---------------------------------");
             Console.WriteLine("Vui lòng nhập số tiền bạn muốn rút: ");
             var amount = Utility.GetUnsignDecimalNumber();
@@ -139,7 +141,7 @@ namespace Vbank.controller
             };
             Console.WriteLine(_model.UpdateBalance(Program.CurrentLoggedIn, historyTransaction)
                 ? "Giao dịch thành công!"
-                : "Giao dịch thất bại, vui lòng thử lại!");
+                : "Giao dịch thất bại, vui lòng thử lại!");   
             Program.CurrentLoggedIn = _model.GetAccountByUserName(Program.CurrentLoggedIn.Username);
             Console.WriteLine("Số dư hiện tại: " + Program.CurrentLoggedIn.Balance);
             Console.WriteLine("Ấn enter để tiếp tục!");
@@ -259,13 +261,11 @@ namespace Vbank.controller
                     var text4 =
                         $"|{"---",3}|{"-----",5}|{"-----------------------",23}|{"----------",10}|{"--------",8}|{"-----------------",17}|{"-------------------------------------",37}|{"---------------",15}|{"-------------------------------------",37}|{"---------------",15}|" +
                         Environment.NewLine;
-                    Console.WriteLine("Bạn có muốn in lịch sử giao dịch ra file .txt không?");
-                    Console.WriteLine("1. Đồng ý." + "\t\t" + "2. Không và quay lại.");
+                    Console.WriteLine("Chức năng: ");
+                    Console.WriteLine("1. In file txt. \t \t 2. Xóa lịch sử giao dịch. \t \t 3. Quay lại.");
                     Console.WriteLine("-------------------------------------------------------");
                     Console.WriteLine("Lựa chọn của bạn là: ");
                     var choice = Utility.GetInt32Number();
-                    Console.Clear();
-                    Console.Out.Flush();
                     switch (choice)
                     {
                         case 1:
@@ -315,6 +315,31 @@ namespace Vbank.controller
                             Console.Out.Flush();
                             break;
                         case 2:
+                            Console.WriteLine("Vui lòng nhìn bảng bên trên và nhập chính xác ID giao dịch bạn muốn xóa.");
+                            var idHt = Console.ReadLine();
+                            if (_model.CheckExistId(idHt))
+                            {
+                                if (_model.UpdateTransaction(idHt))
+                                {
+                                    Console.WriteLine("Xóa thành công.");
+                                    Console.WriteLine("Ấn enter để tiếp tục.");
+                                    Console.ReadLine();
+                                    Console.Clear();
+                                    Console.Out.Flush();
+                                }
+                                else
+                                {
+                                    Console.WriteLine("Xóa không thành công, vui lòng thử lại.");
+                                    Console.ReadLine();
+                                }
+                            }
+                            else
+                            {
+                                Console.WriteLine("Vui lòng nhập đúng ID của giao dịch.");
+                                Console.ReadLine();
+                            }
+                            break;
+                        case 3:
                             Console.Clear();
                             Console.Out.Flush();
                             MainView.GenarateMenu();
@@ -461,6 +486,31 @@ namespace Vbank.controller
                                 MainView.GenarateMenu();
                                 break;
                             case 2:
+                                Console.WriteLine("Vui lòng nhìn bảng bên trên và nhập chính xác ID giao dịch bạn muốn xóa.");
+                                var idHt = Console.ReadLine();
+                                if (_model.CheckExistId(idHt))
+                                {
+                                    if (_model.UpdateTransaction(idHt))
+                                    {
+                                        Console.WriteLine("Xóa thành công.");
+                                        Console.WriteLine("Ấn enter để tiếp tục.");
+                                        Console.ReadLine();
+                                        Console.Clear();
+                                        Console.Out.Flush();
+                                    }
+                                    else
+                                    {
+                                        Console.WriteLine("Xóa không thành công, vui lòng thử lại.");
+                                        Console.ReadLine();
+                                    }
+                                }
+                                else
+                                {
+                                    Console.WriteLine("Vui lòng nhập đúng ID của giao dịch.");
+                                    Console.ReadLine();
+                                }
+                                break;
+                            case 3:
                                 Console.Clear();
                                 Console.Out.Flush();
                                 MainView.GenarateMenu();

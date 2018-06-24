@@ -16,6 +16,7 @@ namespace Vbank.model
         private const string Password = "";
         private const string SslMode = "none";
         private const string PersistSecurityInfo = "True";
+        private const string Charset = "utf8";
 
         private MySqlConnection _connection;
 
@@ -35,8 +36,8 @@ namespace Vbank.model
             {
                 var connString =
                     string.Format(
-                        "Server={0}; database={1}; UID={2}; password={3}; persistsecurityinfo={4};port={5};SslMode={6}",
-                        ServerName, DatabaseName, Uid, Password, PersistSecurityInfo, ServerPort, SslMode);
+                        "Server={0}; database={1}; UID={2}; password={3}; persistsecurityinfo={4};port={5};SslMode={6}; charset = {7};",
+                        ServerName, DatabaseName, Uid, Password, PersistSecurityInfo, ServerPort, SslMode, Charset);
                 _connection = new MySqlConnection(connString);
                 _connection.Open();
             }

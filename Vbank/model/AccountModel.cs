@@ -384,18 +384,20 @@ namespace Vbank.model
             return null;
         }
 
-        public List<Transaction> GetTransactionWithSearchDateFromDateTo(string senderAccountNumber, string dateStart, string dateEnd)
+        public List<Transaction> GetTransactionWithSearchDateFromDateTo(string senderAccountNumber, string dateStart,
+            string dateEnd)
         {
             DbConnection.Instance().OpenConnection();
             var lt = new List<Transaction>();
 
-            var queryString = "select * from `transactions` where senderAccountNumber = @senderAccountNumber and status = 2 and createAt between @dateStart and @dateEnd";
+            var queryString =
+                "select * from `transactions` where senderAccountNumber = @senderAccountNumber and status = 2 and createAt between @dateStart and @dateEnd";
             var cmd = new MySqlCommand(queryString, DbConnection.Instance().Connection);
             cmd.Parameters.AddWithValue("@senderAccountNumber", senderAccountNumber);
             cmd.Parameters.AddWithValue("@dateStart", dateStart);
             cmd.Parameters.AddWithValue("@dateEnd", dateEnd);
             var reader = cmd.ExecuteReader();
-            
+
             while (reader.Read())
             {
                 var id = reader.GetString("id");
@@ -411,15 +413,53 @@ namespace Vbank.model
                     content, senderAccountNumber2, receiverAccountNumber, (Transaction.ActiveStatus) status);
                 lt.Add(transaction);
             }
-            
+
             reader.Close();
             if (lt.Count > 0)
             {
                 return lt;
             }
-            
+
             DbConnection.Instance().CloseConnection();
             return null;
+        }
+
+        public bool UpdateTransaction(string id)
+        {
+            DbConnection.Instance().OpenConnection();
+            var transaction = DbConnection.Instance().Connection.BeginTransaction();
+                var date = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
+                var queryUpdateTransaction =
+                    "update `transactions` set status = 3, updateAt = @updateAt where `transactions`.`id` = @id and status = 2";
+                var cmd = new MySqlCommand(queryUpdateTransaction, DbConnection.Instance().Connection);
+                cmd.Parameters.AddWithValue("@updateAt", date);
+                cmd.Parameters.AddWithValue("@id", id);
+            var updateTrannsaction = cmd.ExecuteNonQuery();
+            if (updateTrannsaction == 1)
+            {
+                transaction.Commit();
+                return true;
+            }
+            DbConnection.Instance().CloseConnection();
+            return false;
+        }
+
+        public bool CheckExistId(string id)
+        {
+            DbConnection.Instance().OpenConnection();
+            var queryUser = "select * from `transactions` where id = @id and status = 2";
+            var cmd = new MySqlCommand(queryUser, DbConnection.Instance().Connection);
+            cmd.Parameters.AddWithValue("@id", id);
+            var reader = cmd.ExecuteReader();
+            if (reader.Read())
+            {
+                DbConnection.Instance().CloseConnection();
+                return true;
+            }
+            
+            reader.Close();
+            DbConnection.Instance().CloseConnection();
+            return false;
         }
     }
 }
