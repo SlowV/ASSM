@@ -138,7 +138,8 @@ namespace Vbank.view
                 Console.WriteLine("------------------ * ------------------");
                 Console.WriteLine("1. Lịch sử giao dịch 10 ngày gần nhất.");
                 Console.WriteLine("2. Tìm kiếm lịch sử giao dịch theo ngày tháng.");
-                Console.WriteLine("3. Quay lại");
+                Console.WriteLine("3. Lịch sử giao dịch.");
+                Console.WriteLine("4. Quay lại");
                 Console.WriteLine("Vui lòng nhập lựa chọn của bạn (1|2|3).");
                 Console.WriteLine("------------------ * ------------------");
                 var choice = Utility.GetInt32Number();
@@ -151,6 +152,9 @@ namespace Vbank.view
                         controller.HistoryTransactionWithSearchDay();
                         break;
                     case 3:
+                        controller.HistoryTransaction();
+                        break;
+                    case 4:
                         GenarateCustomerMenu();
                         break;
                     default:

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using MySql.Data.MySqlClient;
 using Org.BouncyCastle.Cms;
 using Vbank.entity;
@@ -442,12 +443,13 @@ namespace Vbank.model
                     transaction.Commit();
                     return true;
                 }
+
                 DbConnection.Instance().CloseConnection();
                 return false;
             }
             catch (VbankError)
             {
-               transaction.Rollback();
+                transaction.Rollback();
                 return false;
             }
         }
@@ -464,10 +466,43 @@ namespace Vbank.model
                 DbConnection.Instance().CloseConnection();
                 return true;
             }
-            
+
             reader.Close();
             DbConnection.Instance().CloseConnection();
             return false;
+        }
+
+        public List<Transaction> GetTransactions(string accountNumber)
+        {
+            var lt = new List<Transaction>();
+            DbConnection.Instance().OpenConnection();
+            var queryString = "select * from `transactions` where senderAccountNumber = @accountNumber and status = 2";
+            var cmd = new MySqlCommand(queryString, DbConnection.Instance().Connection);
+            cmd.Parameters.AddWithValue("@accountNumber", accountNumber);
+            var reader = cmd.ExecuteReader();
+            if (reader.Read())
+            {
+                var id = reader.GetString("id");
+                var createdAt = reader.GetString("createAt");
+                var updatedAt = reader.GetString("updateAt");
+                var type = reader.GetInt32("type");
+                var amount = reader.GetDecimal("amount");
+                var content = reader.GetString("content");
+                var senderAccountNumber2 = reader.GetString("senderAccountNumber");
+                var receiverAccountNumber = reader.GetString("receiverAccountNumber");
+                var status = reader.GetInt32("status");
+                var transaction = new Transaction(id, createdAt, updatedAt, (Transaction.TransactionType) type, amount,
+                    content, senderAccountNumber2, receiverAccountNumber, (Transaction.ActiveStatus) status);
+                lt.Add(transaction);
+            }
+            
+            reader.Close();
+            if (lt.Count > 0)
+            {
+                return lt;
+            }
+            DbConnection.Instance().CloseConnection();
+            return null;
         }
     }
 }

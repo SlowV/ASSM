@@ -15,7 +15,6 @@ namespace Vbank
     {
         public static Account CurrentLoggedIn;
         public static Account CurrentReceiverAccountNumber;
-        public static List<Transaction> CurrentAccountTransaction;
 
         static void Main(string[] args)
         {
